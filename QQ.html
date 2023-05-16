@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./qq.css" />
+    <script src="./jquery.js"></script>
+  </head>
+  <body>
+    <div id="box">
+      <div id="top">
+        <button id="sc">收藏</button>
+        <button id="tianjia">添加到</button>
+        <button id="xz">下载</button>
+        <button id="shanc">删除</button>
+        <button id="qk">清空列表</button>
+      </div>
+      <div id="test">
+        <div id="test1">
+          <ul class="ul1">
+            <li id="one">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >歌曲</span
+              >
+              <span class="sp1">歌手</span><span class="sp2">时长</span>
+            </li>
+            <br />
+            <li id="two">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >1 The Way I Still Love You（慢速）</span
+              >
+              <span class="sp3">DT</span><span class="sp4">04:07</span>
+            </li>
+            <br />
+            <li id="three">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >2 沙滩</span
+              ><span class="sp5">DT</span><span class="sp6">04:56</span>
+            </li>
+            <br />
+            <li id="four">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >3 学不会</span
+              ><span class="sp5"> DT</span><span class="sp6">05:18</span>
+            </li>
+            <br />
+            <li id="five">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >4 心乱飞</span
+              ><span class="sp5">DT</span><span class="sp6">01:16</span>
+            </li>
+            <br />
+            <li id="six">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >5 爱很简单</span
+              ><span class="sp5"> &emsp; DT</span><span class="sp6">05:18</span>
+            </li>
+            <br />
+            <li id="seven">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >6 那女孩对我说</span
+              >
+              <span class="sp7"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;DT</span
+              ><span class="sp4">04:07</span>
+            </li>
+            <br />
+            <li id="eight">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >7 爱情废柴</span
+              ><span class="sp5">DT</span><span class="sp6">03:25</span>
+            </li>
+            <br />
+            <li id="nine">
+              <input type="checkbox" name="" class="che" />&emsp;&emsp;<span
+                class="sp"
+                >8 就是爱你</span
+              ><span class="sp5"> sakura</span><span class="sp6">03:46</span>
+            </li>
+          </ul>
+        </div>
+        <div id="bf"><div id="lyrics"></div></div>
+      </div>
+      <div id="bottom">
+        <br /><br />
+        <audio id="audio" controls style="width: 100%">
+          <source src="./女孩.mp3" />
+        </audio>
+      </div>
+
+      <script>
+        let lyricData = [
+          { time: 0.0, text: "第一句歌词" },
+          { time: 5.0, text: "第二句歌词" },
+          { time: 10.0, text: "第三句歌词" },
+          { time: 15.0, text: "第四句歌词" },
+          { time: 20.0, text: "第五句歌词" },
+          { time: 25.0, text: "第六句歌词" },
+          { time: 30.0, text: "第七句歌词" },
+          { time: 35.0, text: "第八句歌词" },
+          { time: 40.0, text: "第九句歌词" },
+          { time: 45.0, text: "------------------------------" },
+        ];
+
+        let lyricDiv = document.getElementById("lyrics");
+        let audio = document.getElementById("audio");
+        audio.addEventListener("timeupdate", function () {
+          // TODO: 更新歌词显示
+        });
+        function parseLyric(lyricText) {
+          let lines = lyricText.split("\n");
+          let lyrics = [];
+          for (let i = 0; i < lines.length; i++) {
+            let timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
+            let result = timeReg.exec(lines[i]);
+            if (result) {
+              let time =
+                parseInt(result[1]) * 60 +
+                parseFloat(result[2]) +
+                parseInt(result[3]) / 1000;
+              let text = lines[i].replace(timeReg, "").trim();
+              lyrics.push({ time: time, text: text });
+            }
+          }
+          return lyrics;
+        }
+        audio.addEventListener("timeupdate", function () {
+          let currentTime = audio.currentTime;
+          for (let i = 0; i < lyricData.length; i++) {
+            if (
+              lyricData[i].time <= currentTime &&
+              (!lyricData[i + 1] || lyricData[i + 1].time > currentTime)
+            ) {
+              lyricDiv.innerHTML = "";
+              for (let j = Math.max(i - 2, 0); j < lyricData.length; j++) {
+                let p = document.createElement("p");
+                p.innerText = lyricData[j].text;
+                if (j === i) {
+                  p.classList.add("current");
+                }
+                lyricDiv.appendChild(p);
+              }
+              break;
+            }
+          }
+        });
+        $("#two").on("click", function () {
+          $("#audio").attr("src", "./1.mp3");
+        });
+        $("#three").on("click", function () {
+          $("#audio").attr("src", "./2.mp3");
+        });
+        $("#four").on("click", function () {
+          $("#audio").attr("src", "./3.mp3");
+        });
+        $("#five").on("click", function () {
+          $("#audio").attr("src", "./4.mp3");
+        });
+        $("#six").on("click", function () {
+          $("#audio").attr("src", "./5.mp3");
+        });
+        $("#seven").on("click", function () {
+          $("#audio").attr("src", "./6.mp3");
+        });
+        $("#eight").on("click", function () {
+          $("#audio").attr("src", "./7.mp3");
+        });
+        $("#nine").on("click", function () {
+          $("#audio").attr("src", "./8.mp3");
+        });
+      </script>
+    </div>
+  </body>
+</html>

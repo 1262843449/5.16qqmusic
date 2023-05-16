@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <button id="generate">Generate Video</button>
+    <script src="whammy.js"></script>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let videoFrames = [];
+      let audioChunks = [];
+      function generateFrames() {
+        // 设置画布大小
+        canvas.width = 640;
+        canvas.height = 480;
+
+        // 绘制每一帧
+        for (let i = 0; i < 100; i++) {
+          // 在画布上绘制图形
+          ctx.fillStyle = `rgb(${i}, ${i}, ${i})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // 将当前画布转换为图像数据
+          const frameData = canvas.toDataURL("image/jpeg", 0.8);
+
+          // 存储到数组中
+          videoFrames.push(frameData);
+        }
+      }
+      function recordAudio() {
+        const constraints = { audio: true };
+
+        // 获取用户授权
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(function (stream) {
+            const mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = function (e) {
+              // 存储音频块
+              audioChunks.push(e.data);
+            };
+
+            mediaRecorder.start();
+            setTimeout(() => mediaRecorder.stop(), 5000); // 录制5秒
+          });
+      }
+      function generateVideo() {
+        const encoder = new Whammy.Video();
+
+        // 将每个图像数据加入编码器
+        videoFrames.forEach((frameData) => {
+          const image = new Image();
+          image.src = frameData;
+          encoder.add(image);
+        });
+
+        // 合成音频
+        const audioBlob = new Blob(audioChunks, {
+          type: "audio/ogg; codecs=opus",
+        });
+
+        // 将视频和音频混合
+        const outputBlob = new Blob([encoder.compile()], {
+          type: "video/webm",
+        });
+        const blobUrl = URL.createObjectURL(outputBlob);
+
+        // 创建video元素并播放
+        const video = document.createElement("video");
+        video.src = blobUrl;
+        video.controls = true;
+        document.body.appendChild(video);
+
+        // 创建audio元素并播放
+        const audio = new Audio(URL.createObjectURL(audioBlob));
+        audio.controls = true;
+        document.body.appendChild(audio);
+      }
+      document.getElementById("generate").addEventListener("click", () => {
+        generateFrames();
+        recordAudio();
+        setTimeout(generateVideo, 5000); // 延迟5秒以确保录制完整段音频
+      });
+    </script>
+  </body>
+</html>

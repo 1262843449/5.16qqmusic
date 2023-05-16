@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #audio {
+      }
+      #lyrics {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+        height: 100px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        overflow: hidden;
+      }
+      #lyrics p {
+        margin: 10px 0;
+      }
+      #lyrics p.current {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <audio id="audio" src="一点点.mp3"></audio> -->
+    <audio id="audio" controls>
+      <source src="./一点点.mp3" />
+    </audio>
+    <div id="lyrics"></div>
+    <script>
+      let lyricData = [
+        { time: 0.0, text: "第一句歌词" },
+        { time: 5.0, text: "第二句歌词" },
+        { time: 10.0, text: "第三句歌词" },
+        { time: 15.0, text: "第四句歌词" },
+        { time: 20.0, text: "第五句歌词" },
+      ];
+
+      let lyricDiv = document.getElementById("lyrics");
+      let audio = document.getElementById("audio");
+      audio.addEventListener("timeupdate", function () {
+        // TODO: 更新歌词显示
+      });
+      function parseLyric(lyricText) {
+        let lines = lyricText.split("\n");
+        let lyrics = [];
+        for (let i = 0; i < lines.length; i++) {
+          let timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
+          let result = timeReg.exec(lines[i]);
+          if (result) {
+            let time =
+              parseInt(result[1]) * 60 +
+              parseFloat(result[2]) +
+              parseInt(result[3]) / 1000;
+            let text = lines[i].replace(timeReg, "").trim();
+            lyrics.push({ time: time, text: text });
+          }
+        }
+        return lyrics;
+      }
+      audio.addEventListener("timeupdate", function () {
+        let currentTime = audio.currentTime;
+        for (let i = 0; i < lyricData.length; i++) {
+          if (
+            lyricData[i].time <= currentTime &&
+            (!lyricData[i + 1] || lyricData[i + 1].time > currentTime)
+          ) {
+            lyricDiv.innerHTML = "";
+            for (let j = Math.max(i - 2, 0); j < lyricData.length; j++) {
+              let p = document.createElement("p");
+              p.innerText = lyricData[j].text;
+              if (j === i) {
+                p.classList.add("current");
+              }
+              lyricDiv.appendChild(p);
+            }
+            break;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

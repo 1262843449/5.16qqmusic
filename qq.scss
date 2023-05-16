@@ -1,0 +1,151 @@
+*{
+    padding: 0;
+    margin: 0;
+ 
+}
+
+#box{
+width:100%;
+height:790px;
+background-color: pink;
+display: flex;
+flex-wrap: wrap;
+}
+#top{
+    width:100%;
+    height: 100px;
+    background-color:pink;
+}
+#sc{
+    width: 122px;
+    height: 38px;
+    border: 1px solid rgb(58, 56, 56);
+    margin: 10px;
+    color: white;
+    background-color: rgb(92, 226, 146);
+}
+#tianjia{
+    width: 122px;
+    height: 38px;
+    border: 1px solid black;
+    margin: 10px;
+    color: white;
+    background-color: rgb(92, 226, 146);
+}
+#xz{
+    width: 122px;
+    height: 38px;
+    border: 1px solid black;
+    margin: 10px;
+    color: white;
+    background-color: rgb(92, 226, 146);
+}#shanc{
+    width: 122px;
+    height: 38px;
+    border: 1px solid black;
+    margin: 10px;
+    color: white;
+    background-color: rgb(92, 226, 146);
+}#qk{
+    width: 122px;
+    height: 38px;
+    border: 1px solid black;
+    background-color: rgb(92, 226, 146) ;
+    margin: 10px;
+    color: white;
+}
+#test{
+    width: 950px;
+    height: 550px;
+background-color: rgb(37, 239, 148);
+
+    position: relative;
+}
+#test1{
+    height: 550px;
+    overflow-x: hidden;
+}
+.ul1{
+    width: 946px;
+    height: 50px;
+}
+.ul1 li{
+    height: 50px;
+    color: #dfdede;
+}
+.che{
+    margin: 5px;
+}
+.sp{
+    color: #dfdede;
+}
+.sp1{
+    position: relative;
+    left: 500px;
+    color: #dfdede;
+}
+.sp2{
+    position: relative;
+    left: 700px;
+    color: #dfdede;
+}
+.sp3{
+    position: relative;
+    left: 273px;
+    color: #dfdede;
+}
+.sp4{
+    position: relative;
+    left: 470px;
+    color: #dfdede;
+}
+.sp5{
+    position: relative;
+    left:465px;
+    color: #dfdede;
+}
+.sp6{
+    position: relative;
+    left: 653px;
+    color: #dfdede;
+}
+.sp7{
+    position: relative;
+    left: 287px;
+    color: #dfdede;
+}
+#bf{
+    width: 529px;
+    height: 550px;
+    background-color: rgb(37, 239, 148);
+    position: relative;
+    left: 952px;
+    bottom: 550px;
+}
+#bottom{
+    width: 100%;
+    height: 135px;
+    background-color: aqua;
+}
+  #lyrics {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 200px;
+      height: 100px;
+      text-align: center;
+      font-size: 14px;
+      color: #fff;
+      overflow: hidden;
+  }
+
+  #lyrics p {
+      margin: 10px 0;
+  }
+
+  #lyrics p.current {
+      color: red;
+  }
+  span{
+    color: red !important;
+  }
